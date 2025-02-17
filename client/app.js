@@ -12,7 +12,7 @@ async function createOrderCallback() {
         cart: [
           {
             id: "231",
-            quantity: "2",
+            quantity: "2 ",
           },
         ],
       }),
