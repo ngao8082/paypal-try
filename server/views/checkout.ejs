@@ -16,21 +16,25 @@
     <script>
         paypal.Buttons({
             createOrder: async () => {
-                const productDetails = {
-                    productId: "001",
+                const cart = {
                     name: "Red Sox Hat",
-                    price: "25.00",
+                    price: "25.00",  // ✅ Ensure it's a string
                     currency: "USD",
-                    quantity: 1
-                };
+                    quantity: 1,
+                    };
 
                 const response = await fetch("/api/orders", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ cart: productDetails }) // Pass product data
+                    body: JSON.stringify({ cart}) // Pass product data
                 });
 
                 const order = await response.json();
+                console.log("order created:", order)
+
+                if (!order.id) {
+                    throw new Error("Order creation failed");
+                    }
                 return order.id;
             },
             onApprove: async (data) => {

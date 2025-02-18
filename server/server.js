@@ -65,6 +65,7 @@ const generateClientToken = async () => {
  */
 const createOrder = async (cart) => {
   // use the cart information passed from the front-end to calculate the purchase unit details
+ 
   console.log(
     "shopping cart information passed from the frontend createOrder() callback:",
     cart,
