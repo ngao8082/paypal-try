@@ -65,25 +65,42 @@ const generateClientToken = async () => {
  */
 const createOrder = async (cart) => {
   // use the cart information passed from the front-end to calculate the purchase unit details
- 
+  console.log("Cart received:", cart);
+  console.log("Type of cart:", typeof cart);
+  console.log("Is cart an array?", Array.isArray(cart));
+  
   console.log(
     "shopping cart information passed from the frontend createOrder() callback:",
     cart,
   );
 
+    // Ensure the cart has data
+    if (!cart || cart.length === 0) {
+      throw new Error("Cart is empty. Cannot create order.");
+    }
+
+    const cartArray = Array.isArray(cart) ? cart : Object.values(cart);
+
+    if (!Array.isArray(cartArray) || cartArray.length === 0) {
+      throw new Error("Invalid cart data. Expected a non-empty array.");
+    }
+     
+    // Construct purchase_units dynamically
+    console.log(cartArray)
+    const purchaseUnits = cartArray.map((item) => ({
+      amount: {
+        currency_code: "USD",
+        value: `${cartArray[1]}`, // Directly use the price from the item
+      },
+    }));
+    console.log("Generated purchase_units:", JSON.stringify(purchaseUnits, null, 2));
   const accessToken = await generateAccessToken();
   const url = `${base}/v2/checkout/orders`;
   const payload = {
     intent: "CAPTURE",
-    purchase_units: [
-      {
-        amount: {
-          currency_code: "USD",
-          value: "100.00",
-        },
-      },
-    ],
+    purchase_units: [purchaseUnits[0]]
   };
+  console.log("Payload being sent to PayPal API:", JSON.stringify(payload, null, 2));
 
   const response = await fetch(url, {
     headers: {
