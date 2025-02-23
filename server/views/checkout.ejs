@@ -11,7 +11,7 @@
 <body>
     <h2>Pay with PayPal</h2>
     <p>Product: <strong>Red Sox Hat</strong></p>
-    <p>Price: <strong>$125.00</strong></p>
+    <p>Price: <strong>$0.5</strong></p>
     
     <div id="paypal-button-container"></div>
 
@@ -20,7 +20,7 @@
             createOrder: async () => {
                 const cart = {
                     name: "Red Sox Hat",
-                    price: "125.00",  // ✅ Ensure it's a string
+                    price: "0.5",  // ✅ Ensure it's a string
                     currency: "USD",
                     quantity: 1,
                     };
