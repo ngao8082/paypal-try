@@ -42,6 +42,13 @@
             onApprove: async (data) => {
                 const response = await fetch(`/api/orders/${data.orderID}/capture`, { method: "POST" });
                 const details = await response.json();
+                console.log("Payment capture response:", details);
+
+                if (details.status === "COMPLETED") {
+                    alert("Payment successful! Your balance should now reflect the payment.");
+                } else {
+                    alert("Payment failed or pending approval.");
+                }
                 alert("Payment successful!");
             }
         }).render("#paypal-button-container");

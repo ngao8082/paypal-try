@@ -87,18 +87,27 @@ const createOrder = async (cart) => {
      
     // Construct purchase_units dynamically
     console.log(cartArray)
-    const purchaseUnits = cartArray.map((item) => ({
+    let price = "0.00"; // Default value
+
+    for (let i = 0; i < cartArray.length; i++) {
+      if (cartArray[1]) {
+        price = String(cartArray[1]); // Convert to string and store the first valid price
+        break; // Stop the loop after finding the first valid price
+      }
+    }
+     console.log(price)   
+    const purchaseUnits = {
       amount: {
         currency_code: "USD",
-        value: `${cartArray[1]}`, // Directly use the price from the item
+        value: `${price}`, // Directly use the price from the item
       },
-    }));
+    }
     console.log("Generated purchase_units:", JSON.stringify(purchaseUnits, null, 2));
   const accessToken = await generateAccessToken();
   const url = `${base}/v2/checkout/orders`;
   const payload = {
     intent: "CAPTURE",
-    purchase_units: [purchaseUnits[0]]
+    purchase_units: [purchaseUnits]
   };
   console.log("Payload being sent to PayPal API:", JSON.stringify(payload, null, 2));
 
